@@ -35,8 +35,7 @@ app.get('/articles', function(request, response) {
 });
 
 app.post('/articles', function(request, response) {
-  // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // ANSWER:
+  // ANSWER: This uses parts 1-4 of the diagram. This works with Article.prototype.insertRecord(). This performs the CREATE part of the CRUD.
   client.query(
     `INSERT INTO
     articles(title, author, authorUrl, category, publishedOn, body)
@@ -60,8 +59,7 @@ app.post('/articles', function(request, response) {
 });
 
 app.put('/articles/:id', function(request, response) {
-  // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // Put your response here...
+  // ANSWER: This uses parts 1-4. This is used by Article.prototype.updateRecord(). It does the UPDATE part of the CRUD.
   client.query(
     `UPDATE articles
     SET
@@ -87,8 +85,7 @@ app.put('/articles/:id', function(request, response) {
 });
 
 app.delete('/articles/:id', function(request, response) {
-  // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // Put your response here...
+  // ANSWER: This uses parts 1-4. This is used by Article.prototype.deleteRecord(). It does the DELETE part of the CRUD.
   client.query(
     `DELETE FROM articles WHERE article_id=$1;`,
     [request.params.id]
@@ -102,8 +99,7 @@ app.delete('/articles/:id', function(request, response) {
 });
 
 app.delete('/articles', function(request, response) {
-  // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // Put your response here...
+  // ANSWER: This uses parts 1-4. This is used by Article.prototype.deleteRecord(). It does the DELETE part of the CRUD, on the ENTIRE TABLE.
   client.query(
     'DELETE FROM articles;'
   )
