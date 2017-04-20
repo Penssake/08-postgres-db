@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 3000;
 const app = express();
 //change user name and passcode for james
-const conString = 'postgres://postgres:1234@localhost:5432';
+const conString = 'postgres://postgres:1234@localhost:5432/kilovolt';
 
 const client = new pg.Client(conString);
 
