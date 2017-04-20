@@ -8,36 +8,23 @@ const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 3000;
 const app = express();
 //change user name and passcode for james
-const conString = 'postgres://Christina:Christina@localhost:5433';
+const conString = 'postgres://postgres:1234@localhost:5432';
 
-// TODO: Our pg module has a Client constructor that accepts one argument: the conString we just defined.
-//       This is how it knows the URL and, for Windows and Linux users, our username and password for our
-//       database when client.connect is called on line 26. Thus, we need to pass our conString into our
-//       pg.Client() call.
-const client = new pg.Client('something needs to go here... read the instructions above!');
+const client = new pg.Client(conString);
 
-// REVIEW: Use the client object to connect to our DB.
 client.connect();
 
-
-// REVIEW: Install the middleware plugins so that our app is aware and can use the body-parser module
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('./public'));
 
-
-// REVIEW: Routes for requesting HTML resources
 app.get('/new', function(request, response) {
-  // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // Put your response here...
+  // Answer: The get is part 2, and this returns part 5, the response. This piece of server.js is not interacted with in article.js. It is just for navigation purposes right now. This is part of the READ.
   response.sendFile('new.html', {root: './public'});
 });
 
-
-// REVIEW: Routes for making API calls to use CRUD Operations on our database
 app.get('/articles', function(request, response) {
-  // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // Put your response here...
+  // Answer: This uses parts 1-4. It is interacted with by Article.fetchAll(). This just READs.
   client.query('SELECT * FROM articles')
   .then(function(result) {
     response.send(result.rows);
@@ -49,10 +36,10 @@ app.get('/articles', function(request, response) {
 
 app.post('/articles', function(request, response) {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // Put your response here...
+  // ANSWER:
   client.query(
     `INSERT INTO
-    articles(title, author, "authorUrl", category, "publishedOn", body)
+    articles(title, author, authorUrl, category, publishedOn, body)
     VALUES ($1, $2, $3, $4, $5, $6);
     `,
     [
@@ -78,7 +65,7 @@ app.put('/articles/:id', function(request, response) {
   client.query(
     `UPDATE articles
     SET
-      title=$1, author=$2, "authorUrl"=$3, category=$4, "publishedOn"=$5, body=$6
+      title=$1, author=$2, authorUrl=$3, category=$4, publishedOn=$5, body=$6
     WHERE article_id=$7;
     `,
     [
@@ -154,7 +141,7 @@ function loadArticles() {
         JSON.parse(fd.toString()).forEach(ele => {
           client.query(`
             INSERT INTO
-            articles(title, author, "authorUrl", category, "publishedOn", body)
+            articles(title, author, authorUrl, category, publishedOn, body)
             VALUES ($1, $2, $3, $4, $5, $6);
           `,
             [ele.title, ele.author, ele.authorUrl, ele.category, ele.publishedOn, ele.body]
